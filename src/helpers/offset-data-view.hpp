@@ -23,8 +23,8 @@ namespace PhyParser {
     [[nodiscard]] OffsetDataView withOffset(const size_t newOffset) const;
 
     template <typename T>
-    [[nodiscard]] ValueOffsetPair<T> parseStruct(const size_t relativeOffset, const char* errorMessage) const {
-      const auto absoluteOffset = offset + relativeOffset;
+    [[nodiscard]] ValueOffsetPair<T> parseStruct(const int64_t relativeOffset, const char* errorMessage) const {
+      const auto absoluteOffset = static_cast<int64_t>(offset) + relativeOffset;
       checkBounds(absoluteOffset, sizeof(T), data.size(), errorMessage);
 
       return std::make_pair(*reinterpret_cast<const T*>(&data[absoluteOffset]), absoluteOffset);

@@ -54,10 +54,10 @@ namespace PhyParser {
   }
 
   std::vector<Phy::Solid> Phy::parseCompactSurface(const OffsetDataView& data) {
-    const auto surfaceHeader =
-      data.parseStruct<CompactSurfaceHeader>(0, "Failed to parse compact surface header").first;
+    const auto [surfaceHeader, headerOffset] =
+      data.parseStruct<CompactSurfaceHeader>(0, "Failed to parse compact surface header");
     const auto nodeData =
-      data.withOffset(offsetof(CompactSurfaceHeader, massCentre) + surfaceHeader.offsetLedgetreeRoot);
+      data.withOffset(headerOffset + offsetof(CompactSurfaceHeader, massCentre) + surfaceHeader.offsetLedgetreeRoot);
 
     std::vector<Solid> solids;
     std::stack<size_t> nodeOffsets;
@@ -68,8 +68,7 @@ namespace PhyParser {
       nodeOffsets.pop();
 
       if (node.isTerminal()) {
-        const auto [ledge, ledgeOffset] =
-          nodeData.parseStruct<Ledge>(nodeOffset + node.compactNodeOffset, "Failed to parse ledge");
+        const auto [ledge, ledgeOffset] = nodeData.parseStruct<Ledge>(node.compactNodeOffset, "Failed to parse ledge");
 
         solids.push_back(parseLedge(ledge, data.withOffset(ledgeOffset)));
       } else {
