@@ -15,6 +15,7 @@ add_library(PHYParser
         src/helpers/offset-data-view.cpp
         src/enums.hpp
         src/errors.hpp
+        src/structs/mopp.hpp
 )
 
 target_include_directories(
