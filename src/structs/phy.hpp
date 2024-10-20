@@ -40,13 +40,6 @@ namespace PhyParser::Structs {
     std::array<char, 4> id; // Should be IVPS
   };
 
-  struct ConvexSolidHeader {
-    int32_t verticesOffset;
-    int32_t boneIndex;
-    int32_t flags; // TODO: Enum?
-    int32_t trianglesCount;
-  };
-
   struct LedgeNode {
     int32_t rightNodeOffset;
     int32_t compactNodeOffset;
