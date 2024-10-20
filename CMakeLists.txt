@@ -5,8 +5,16 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 set(CMAKE_CXX_STANDARD 20)
 
 add_library(PHYParser
-        src/phy.hpp
         PHYParser.hpp
+        src/phy.hpp
+        src/phy.cpp
+        src/structs/common.hpp
+        src/structs/phy.hpp
+        src/helpers/check-bounds.hpp
+        src/helpers/offset-data-view.hpp
+        src/helpers/offset-data-view.cpp
+        src/enums.hpp
+        src/errors.hpp
 )
 
 target_include_directories(
