@@ -55,11 +55,7 @@ namespace PhyParser::Structs {
 
   struct Ledge {
     int32_t pointOffset;
-
-    union {
-      int32_t ledgetreeNodeOffset;
-      int32_t sourceUserdata;
-    };
+    int32_t boneIndex;
 
     uint32_t hasChildrenFlags : 2;
     int32_t isCompactFlag : 2;

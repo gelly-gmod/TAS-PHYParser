@@ -108,6 +108,10 @@ namespace PhyParser {
       ledge.pointOffset, maxVertexIndex + 1, "Failed to parse vertex array"
     );
 
-    return {.vertices = std::move(vertices), .indices = std::move(indices)};
+    return {
+      .vertices = std::move(vertices),
+      .indices = std::move(indices),
+      .boneIndex = ledge.boneIndex,
+    };
   }
 }

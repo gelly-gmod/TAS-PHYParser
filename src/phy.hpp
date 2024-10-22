@@ -13,6 +13,8 @@ namespace PhyParser {
     struct Solid {
       std::vector<Structs::Vector4> vertices;
       std::vector<uint16_t> indices;
+
+      int32_t boneIndex;
     };
 
     explicit Phy(const std::span<std::byte>& data, const std::optional<int64_t>& checksum = std::nullopt);
