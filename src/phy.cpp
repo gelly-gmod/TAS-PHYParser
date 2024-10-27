@@ -29,7 +29,8 @@ namespace PhyParser {
       offset += surfaceHeader.size + sizeof(SurfaceHeader::size);
     }
 
-    textSection = dataView.parseString(offset, "Failed to parse text section");
+    const auto rawTextSection = dataView.parseString(offset, "Failed to parse text section");
+    textSection = parseTextSection(rawTextSection);
   }
 
   int64_t Phy::getChecksum() const {
@@ -39,7 +40,7 @@ namespace PhyParser {
   const std::vector<Phy::Solid>& Phy::getSolids() const {
     return solids;
   }
-  const std::string& Phy::getTextSection() const {
+  const TextSection& Phy::getTextSection() const {
     return textSection;
   }
 

@@ -16,6 +16,8 @@ add_library(PHYParser
         src/enums.hpp
         src/errors.hpp
         src/structs/mopp.hpp
+        src/helpers/text-section-parser.hpp
+        src/helpers/text-section-parser.cpp
 )
 
 target_include_directories(
