@@ -23,9 +23,12 @@ namespace PhyParser {
 
     [[nodiscard]] const std::vector<Solid>& getSolids() const;
 
+    [[nodiscard]] const std::string& getTextSection() const;
+
   private:
     Structs::Header header;
     std::vector<Solid> solids;
+    std::string textSection;
 
     [[nodiscard]] static std::vector<Solid> parseSurface(
       const Structs::SurfaceHeader& surfaceHeader, const OffsetDataView& data

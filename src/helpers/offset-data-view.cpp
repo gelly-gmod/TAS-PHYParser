@@ -15,7 +15,7 @@ namespace PhyParser {
 
     for (size_t i = absoluteOffset; i < data.size(); i++) {
       if (data[i] == std::byte(0)) {
-        return reinterpret_cast<const char*>(&data[offset]);
+        return reinterpret_cast<const char*>(&data[absoluteOffset]);
       }
     }
 

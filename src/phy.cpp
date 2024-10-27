@@ -28,6 +28,8 @@ namespace PhyParser {
 
       offset += surfaceHeader.size + sizeof(SurfaceHeader::size);
     }
+
+    textSection = dataView.parseString(offset, "Failed to parse text section");
   }
 
   int64_t Phy::getChecksum() const {
@@ -36,6 +38,9 @@ namespace PhyParser {
 
   const std::vector<Phy::Solid>& Phy::getSolids() const {
     return solids;
+  }
+  const std::string& Phy::getTextSection() const {
+    return textSection;
   }
 
   std::vector<Phy::Solid> Phy::parseSurface(const SurfaceHeader& surfaceHeader, const OffsetDataView& data) {
