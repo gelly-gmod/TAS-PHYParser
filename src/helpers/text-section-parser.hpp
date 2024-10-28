@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -53,7 +54,7 @@ namespace PhyParser {
       std::vector<std::string> jointMerges;
     };
 
-    std::vector<Solid> solids;
+    std::map<uint32_t, Solid> solids;
     std::vector<RagdollConstraint> ragdollConstraints;
     CollisionRules collisionRules;
     AnimatedFriction animatedFriction;

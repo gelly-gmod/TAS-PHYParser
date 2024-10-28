@@ -78,6 +78,32 @@ namespace PhyParser {
         }
 
         parsed.ragdollConstraints.push_back(constraint);
+      } else if (segment.type == "solid") {
+        TextSection::Solid solid{};
+
+        for (const auto& [key, value] : segment.keyValues) {
+          if (key == "index") {
+            solid.index = std::stoi(value);
+          } else if (key == "name") {
+            solid.name = value;
+          } else if (key == "parent") {
+            solid.parentName = value;
+          } else if (key == "mass") {
+            solid.mass = std::stof(value);
+          } else if (key == "surfaceprop") {
+            solid.surfaceProperties = value;
+          } else if (key == "damping") {
+            solid.damping = std::stof(value);
+          } else if (key == "rotdamping") {
+            solid.rotationDamping = std::stof(value);
+          } else if (key == "inertia") {
+            solid.inertia = std::stof(value);
+          } else if (key == "volume") {
+            solid.volume = std::stof(value);
+          }
+        }
+
+        parsed.solids.emplace(solid.index, solid);
       }
     }
 
