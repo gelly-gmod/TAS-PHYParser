@@ -33,8 +33,8 @@ namespace PhyParser::Structs {
     Vector3 massCentre;
     Vector3 rotationInertia;
     float upperLimitRadius;
-    int maxDeviation : 8;
-    int byteSize : 24;
+    uint32_t maxDeviation : 8;
+    uint32_t byteSize : 24;
     int32_t offsetLedgetreeRoot;
     std::array<int32_t, 2> unused;
     std::array<char, 4> id; // Should be IVPS
@@ -57,26 +57,26 @@ namespace PhyParser::Structs {
     int32_t pointOffset;
     int32_t boneIndex;
 
-    unsigned int hasChildrenFlags : 2;
-    int isCompactFlag : 2;
-    unsigned int dummy : 4;
-    unsigned int sizeDiv16 : 24;
+    uint32_t hasChildrenFlags : 2;
+    uint32_t isCompactFlag : 2;
+    uint32_t dummy : 4;
+    uint32_t sizeDiv16 : 24;
 
     uint16_t trianglesCount;
     int16_t unknown;
   };
 
   struct Edge {
-    unsigned int startPointIndex : 16;
-    unsigned int oppositePointIndex : 15;
-    unsigned int isVirtual : 1;
+    uint32_t startPointIndex : 16;
+    uint32_t oppositePointIndex : 15;
+    uint32_t isVirtual : 1;
   };
 
   struct CompactTriangle {
-    unsigned int triangleIndex : 12;
-    unsigned int pierceIndex : 12;
-    unsigned int materialIndex : 7;
-    unsigned int isVirtual : 1;
+    uint32_t triangleIndex : 12;
+    uint32_t pierceIndex : 12;
+    uint32_t materialIndex : 7;
+    uint32_t isVirtual : 1;
 
     std::array<Edge, 3> edges;
   };
