@@ -40,6 +40,7 @@ namespace PhyParser {
   const std::vector<Phy::Solid>& Phy::getSolids() const {
     return solids;
   }
+
   const TextSection& Phy::getTextSection() const {
     return textSection;
   }
