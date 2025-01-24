@@ -62,14 +62,14 @@ namespace PhyParser {
   std::vector<Phy::Solid> Phy::parseCompactSurface(const OffsetDataView& data) {
     const auto [surfaceHeader, headerOffset] =
       data.parseStruct<CompactSurfaceHeader>(0, "Failed to parse compact surface header");
-    const auto ledgetreeRoot =
-      headerOffset + offsetof(CompactSurfaceHeader, massCentre) + surfaceHeader.offsetLedgetreeRoot;
 
-    const auto nodeData = data.withOffset(ledgetreeRoot);
+    const auto rootNode = headerOffset + offsetof(CompactSurfaceHeader, massCentre) + surfaceHeader.offsetLedgetreeRoot;
+
+    const auto nodeData = data.withOffset(0);
 
     std::vector<Solid> solids;
     std::stack<size_t> nodeOffsets;
-    nodeOffsets.push(0);
+    nodeOffsets.push(rootNode);
 
     while (!nodeOffsets.empty()) {
       auto [node, nodeOffset] = nodeData.parseStruct<LedgeNode>(nodeOffsets.top(), "Failed to parse ledge node");
@@ -77,12 +77,12 @@ namespace PhyParser {
 
       if (node.isTerminal()) {
         const auto [ledge, ledgeOffset] =
-          nodeData.parseStruct<Ledge>(nodeOffset + node.compactNodeOffset - ledgetreeRoot, "Failed to parse ledge");
+          nodeData.parseStruct<Ledge>(nodeOffset + node.compactNodeOffset, "Failed to parse ledge");
 
         solids.push_back(parseLedge(ledge, data.withOffset(ledgeOffset)));
       } else {
-        nodeOffsets.push(nodeOffset + node.rightNodeOffset - ledgetreeRoot);
-        nodeOffsets.push(nodeOffset + sizeof(LedgeNode) - ledgetreeRoot);
+        nodeOffsets.push(nodeOffset + node.rightNodeOffset);
+        nodeOffsets.push(nodeOffset + sizeof(LedgeNode));
       }
     }
 
