@@ -123,4 +123,4 @@ namespace PhyParser {
       .boneIndex = ledge.boneIndex,
     };
   }
-} // namespace PhyParser
+}
