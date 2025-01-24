@@ -1,0 +1,45 @@
+# https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+# Based on https://gist.github.com/nicklasfrahm/4a4fff24381f85ada76ccb651f555e1f?permalink_comment_id=4981874#gistcomment-4981874
+
+ColumnLimit: 120
+ContinuationIndentWidth: 2
+IndentWidth: 2
+TabWidth: 2
+ConstructorInitializerIndentWidth: 2
+IndentCaseLabels: true
+PenaltyReturnTypeOnItsOwnLine: 20000
+PenaltyIndentedWhitespace: 0
+PenaltyBreakOpenParenthesis: 0
+PenaltyBreakBeforeFirstCallParameter: 0
+UseTab: Never
+SortIncludes: CaseInsensitive
+SortUsingDeclarations: false
+AlignConsecutiveMacros: false
+AlignEscapedNewlines: DontAlign
+AlignAfterOpenBracket: BlockIndent
+AlignOperands: false
+AlignTrailingComments: false
+BinPackArguments: false
+BinPackParameters: false
+SpacesInContainerLiterals: false
+Cpp11BracedListStyle: true
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Always
+FixNamespaceComments: false
+ReflowComments: false
+NamespaceIndentation: All
+IncludeBlocks: Merge
+BreakStringLiterals: false
+BreakConstructorInitializers: AfterColon
+IndentPPDirectives: BeforeHash
+IncludeCategories:
+    -   Regex: '"[[:alnum:]._-]+"'
+        Priority: 1
+        SortPriority: 1
+    -   Regex: '^((<|").*/)'
+        Priority: 2
+        SortPriority: 2
+    -   Regex: "<[[:alnum:]._-]+>"
+        Priority: 3
+        SortPriority: 3
+PointerAlignment: Left
