@@ -18,6 +18,11 @@ namespace PhyParser {
       int32_t boneIndex;
     };
 
+    struct LedgeData {
+      std::vector<Structs::Vector4> vertices;
+      std::vector<uint16_t> indices;
+    };
+
     explicit Phy(const std::span<std::byte>& data, const std::optional<int64_t>& checksum = std::nullopt);
 
     [[nodiscard]] int64_t getChecksum() const;
@@ -39,6 +44,6 @@ namespace PhyParser {
 
     [[nodiscard]] static std::vector<Solid> parseMopp(const OffsetDataView& data);
 
-    [[nodiscard]] static Solid parseLedge(const Structs::Ledge& ledge, const OffsetDataView& data);
+    [[nodiscard]] static LedgeData parseLedge(const Structs::Ledge& ledge, const OffsetDataView& data);
   };
 }

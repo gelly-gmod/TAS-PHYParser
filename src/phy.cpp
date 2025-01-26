@@ -68,8 +68,10 @@ namespace PhyParser {
 
     const auto nodeData = data.withOffset(0);
 
-    std::vector<Solid> solids;
+    std::vector<LedgeData> ledges;
     std::stack<size_t> nodeOffsets;
+    int boneIndex = -1;
+
     nodeOffsets.push(rootNode);
 
     while (!nodeOffsets.empty()) {
@@ -79,22 +81,38 @@ namespace PhyParser {
       if (node.isTerminal()) {
         const auto [ledge, ledgeOffset] =
           nodeData.parseStruct<Ledge>(nodeOffset + node.compactNodeOffset, "Failed to parse ledge");
+        if (boneIndex == -1) {
+          boneIndex = ledge.boneIndex;
+        }
 
-        solids.push_back(parseLedge(ledge, data.withOffset(ledgeOffset)));
+        ledges.push_back(parseLedge(ledge, data.withOffset(ledgeOffset)));
       } else {
         nodeOffsets.push(nodeOffset + node.rightNodeOffset);
         nodeOffsets.push(nodeOffset + sizeof(LedgeNode));
       }
     }
 
-    return std::move(solids);
+    Solid solid = {};
+    solid.boneIndex = boneIndex;
+
+    // Merge all of the ledges into a single solid
+    for (const auto& ledge : ledges) {
+      const auto offset = solid.vertices.size();
+      solid.vertices.insert(solid.vertices.end(), ledge.vertices.begin(), ledge.vertices.end());
+
+      for (const auto index : ledge.indices) {
+        solid.indices.push_back(index + offset);
+      }
+    }
+
+    return {solid};
   }
 
   std::vector<Phy::Solid> Phy::parseMopp(const OffsetDataView& /*data*/) {
     throw std::runtime_error("Not implemented");
   }
 
-  Phy::Solid Phy::parseLedge(const Ledge& ledge, const OffsetDataView& data) {
+  Phy::LedgeData Phy::parseLedge(const Ledge& ledge, const OffsetDataView& data) {
     const auto triangles = data.parseStructArrayWithoutOffsets<CompactTriangle>(
       sizeof(Ledge), ledge.trianglesCount, "Failed to parse triangle array"
     );
@@ -121,7 +139,6 @@ namespace PhyParser {
     return {
       .vertices = std::move(vertices),
       .indices = std::move(indices),
-      .boneIndex = ledge.boneIndex,
     };
   }
 }
