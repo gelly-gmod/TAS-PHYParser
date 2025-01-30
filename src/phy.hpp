@@ -44,6 +44,8 @@ namespace PhyParser {
 
     [[nodiscard]] static std::vector<Solid> parseMopp(const OffsetDataView& data);
 
-    [[nodiscard]] static LedgeData parseLedge(const Structs::Ledge& ledge, const OffsetDataView& data);
+    [[nodiscard]] static LedgeData parseLedge(
+      const Structs::Ledge& ledge, uint64_t ledgeOffset, const OffsetDataView& data
+    );
   };
 }

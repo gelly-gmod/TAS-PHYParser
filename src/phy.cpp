@@ -85,7 +85,7 @@ namespace PhyParser {
           boneIndex = ledge.boneIndex;
         }
 
-        ledges.push_back(parseLedge(ledge, data.withOffset(ledgeOffset)));
+        ledges.push_back(parseLedge(ledge, ledgeOffset, data.withOffset(ledgeOffset)));
       } else {
         nodeOffsets.push(nodeOffset + node.rightNodeOffset);
         nodeOffsets.push(nodeOffset + sizeof(LedgeNode));
@@ -112,7 +112,7 @@ namespace PhyParser {
     throw std::runtime_error("Not implemented");
   }
 
-  Phy::LedgeData Phy::parseLedge(const Ledge& ledge, const OffsetDataView& data) {
+  Phy::LedgeData Phy::parseLedge(const Ledge& ledge, uint64_t ledgeOffset, const OffsetDataView& data) {
     const auto triangles = data.parseStructArrayWithoutOffsets<CompactTriangle>(
       sizeof(Ledge), ledge.trianglesCount, "Failed to parse triangle array"
     );
@@ -120,21 +120,24 @@ namespace PhyParser {
     std::vector<uint16_t> indices;
     indices.reserve(ledge.trianglesCount * 3);
 
-    uint32_t maxVertexIndex = 0;
-    for (const auto& triangle : triangles) {
+    std::vector<Vector4> vertices;
+    vertices.reserve(ledge.trianglesCount * 3);
+
+    const auto vertexData = data.withOffset(ledgeOffset + ledge.pointOffset);
+    for (size_t i = 0; i < triangles.size(); i++) {
+      const auto& triangle = triangles[i];
       const auto index1 = triangle.edges[0].startPointIndex;
       const auto index2 = triangle.edges[1].startPointIndex;
       const auto index3 = triangle.edges[2].startPointIndex;
 
-      maxVertexIndex = std::max({maxVertexIndex, index1, index2, index3});
-      indices.push_back(index1);
-      indices.push_back(index2);
-      indices.push_back(index3);
-    }
+      indices.push_back(indices.size());
+      indices.push_back(indices.size());
+      indices.push_back(indices.size());
 
-    auto vertices = data.parseStructArrayWithoutOffsets<Vector4>(
-      ledge.pointOffset, maxVertexIndex + 1, "Failed to parse vertex array"
-    );
+      vertices.push_back(vertexData.parseStruct<Vector4>(index1 * sizeof(Vector4), "Failed to parse vertex").first);
+      vertices.push_back(vertexData.parseStruct<Vector4>(index2 * sizeof(Vector4), "Failed to parse vertex").first);
+      vertices.push_back(vertexData.parseStruct<Vector4>(index3 * sizeof(Vector4), "Failed to parse vertex").first);
+    }
 
     return {
       .vertices = std::move(vertices),
