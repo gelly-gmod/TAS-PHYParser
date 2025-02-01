@@ -101,7 +101,7 @@ namespace PhyParser {
       solid.vertices.insert(solid.vertices.end(), ledge.vertices.begin(), ledge.vertices.end());
 
       for (const auto index : ledge.indices) {
-        solid.indices.push_back(index + offset);
+        solid.indices.push_back(solid.indices.size());
       }
     }
 
@@ -117,7 +117,7 @@ namespace PhyParser {
       sizeof(Ledge), ledge.trianglesCount, "Failed to parse triangle array"
     );
 
-    std::vector<uint16_t> indices;
+    std::vector<uint32_t> indices;
     indices.reserve(ledge.trianglesCount * 3);
 
     std::vector<Vector4> vertices;

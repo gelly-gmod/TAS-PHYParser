@@ -13,14 +13,14 @@ namespace PhyParser {
   public:
     struct Solid {
       std::vector<Structs::Vector4> vertices;
-      std::vector<uint16_t> indices;
+      std::vector<uint32_t> indices;
 
       int32_t boneIndex;
     };
 
     struct LedgeData {
       std::vector<Structs::Vector4> vertices;
-      std::vector<uint16_t> indices;
+      std::vector<uint32_t> indices;
     };
 
     explicit Phy(const std::span<std::byte>& data, const std::optional<int64_t>& checksum = std::nullopt);
